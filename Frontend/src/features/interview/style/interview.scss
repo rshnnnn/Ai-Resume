@@ -1,0 +1,610 @@
+// ── Variables ────────────────────────────────────────────────────────────────
+$bg-base:        #0f1117;
+$bg-panel:       #1e2130;
+$bg-input:       #12141f;
+$border:         #2d3148;
+$text-primary:   #e2e8f0;
+$text-muted:     #94a3b8;
+$text-label:     #a5b4fc;
+$accent:         #6366f1;
+$accent-purple:  #a855f7;
+$accent-pink:    #ec4899;
+$radius-lg:      16px;
+$radius-md:      10px;
+$radius-sm:      6px;
+$font:           'Inter', 'Segoe UI', sans-serif;
+
+// ── Reset / Base ─────────────────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; }
+
+// ── Loading Screen ───────────────────────────────────────────────────────────
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: $bg-base;
+  font-family: $font;
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, $accent, $accent-purple, $accent-pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+// ── Page Wrapper ─────────────────────────────────────────────────────────────
+.interview-page {
+  min-height: 100vh;
+  background: $bg-base;
+  font-family: $font;
+  color: $text-primary;
+  padding: 28px 24px;
+}
+
+// ── Layout (Nav | Divider | Content | Divider | Sidebar) ─────────────────────
+.interview-layout {
+  display: grid;
+  grid-template-columns: 220px 1px 1fr 1px 280px;
+  gap: 0 20px;
+  align-items: start;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 56px);
+}
+
+// ── Vertical Dividers ─────────────────────────────────────────────────────────
+.interview-divider {
+  width: 1px;
+  background: $border;
+  align-self: stretch;
+  border-radius: 1px;
+}
+
+// ── Left Nav ─────────────────────────────────────────────────────────────────
+.interview-nav {
+  position: sticky;
+  top: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  min-height: calc(100vh - 84px);
+
+  .nav-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: $text-muted;
+    padding: 0 10px;
+    margin: 0 0 6px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: $radius-md;
+    color: $text-muted;
+    font-size: 0.88rem;
+    font-weight: 500;
+    font-family: $font;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+
+    &:hover {
+      background: rgba($accent, 0.08);
+      color: $text-primary;
+    }
+
+    &--active {
+      background: rgba($accent, 0.15);
+      border-color: rgba($accent, 0.4);
+      color: $text-label;
+      font-weight: 600;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+
+  // Download Resume Button
+  .button {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: $font;
+    border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+
+    &.primary-button {
+      background: linear-gradient(135deg, $accent, $accent-purple);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba($accent, 0.35);
+
+      &:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba($accent, 0.5);
+      }
+
+      &:active {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// ── Center Content ────────────────────────────────────────────────────────────
+.interview-content {
+  padding: 0 8px;
+  min-width: 0; // prevent grid blowout
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.content-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    color: $text-primary;
+  }
+
+  &__count {
+    background: rgba($accent, 0.15);
+    color: $text-label;
+    border: 1px solid rgba($accent, 0.3);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+}
+
+// ── Question List ─────────────────────────────────────────────────────────────
+.q-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+// ── Question Card ─────────────────────────────────────────────────────────────
+.q-card {
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: rgba($accent, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover .q-card__chevron {
+      color: $text-label;
+    }
+  }
+
+  &__index {
+    flex-shrink: 0;
+    background: linear-gradient(135deg, $accent, $accent-purple);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  &__question {
+    flex: 1;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: $text-primary;
+    line-height: 1.5;
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    color: $text-muted;
+    display: flex;
+    align-items: center;
+    transition: transform 0.25s ease, color 0.2s ease;
+
+    &--open {
+      transform: rotate(180deg);
+      color: $text-label;
+    }
+  }
+
+  &__body {
+    border-top: 1px solid $border;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: slideDown 0.22s ease;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: $text-muted;
+    }
+  }
+
+  &__tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    width: fit-content;
+
+    &--intention {
+      background: rgba(168, 85, 247, 0.15);
+      color: $accent-purple;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    &--answer {
+      background: rgba(99, 102, 241, 0.15);
+      color: $text-label;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── Road Map ──────────────────────────────────────────────────────────────────
+.roadmap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.roadmap-day {
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  padding: 20px 24px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: rgba($accent, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  &__badge {
+    background: linear-gradient(135deg, $accent, $accent-purple);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
+  }
+
+  &__focus {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__tasks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: $text-muted;
+      line-height: 1.6;
+    }
+  }
+
+  &__bullet {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $accent, $accent-purple);
+    margin-top: 7px;
+  }
+}
+
+// ── Right Sidebar ─────────────────────────────────────────────────────────────
+.interview-sidebar {
+  position: sticky;
+  top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 4px 0;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: $border;
+  border-radius: 1px;
+}
+
+// ── Match Score ───────────────────────────────────────────────────────────────
+.match-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  &__label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: $text-muted;
+    margin: 0;
+    align-self: flex-start;
+  }
+
+  &__ring {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 5px solid;
+
+    // Score tiers
+    &.score--high {
+      border-color: #22c55e;
+      box-shadow: 0 0 24px rgba(34, 197, 94, 0.3);
+      .match-score__value { color: #22c55e; }
+    }
+    &.score--mid {
+      border-color: #f59e0b;
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.3);
+      .match-score__value { color: #f59e0b; }
+    }
+    &.score--low {
+      border-color: #ef4444;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.3);
+      .match-score__value { color: #ef4444; }
+    }
+  }
+
+  &__value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  &__pct {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $text-muted;
+    margin-top: 2px;
+  }
+
+  &__sub {
+    margin: 0;
+    font-size: 0.82rem;
+    color: $text-muted;
+    text-align: center;
+  }
+}
+
+// ── Skill Gaps ────────────────────────────────────────────────────────────────
+.skill-gaps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: $text-muted;
+    margin: 0;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+.skill-tag {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+
+  &--high {
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  &--medium {
+    background: rgba(245, 158, 11, 0.12);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  &--low {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 1100px) {
+  .interview-layout {
+    grid-template-columns: 200px 1px 1fr;
+    grid-template-rows: auto auto;
+
+    // Hide right divider & sidebar — move sidebar below content
+    .interview-divider:last-of-type {
+      display: none;
+    }
+
+    .interview-sidebar {
+      grid-column: 1 / -1;
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 20px 0 0;
+      border-top: 1px solid $border;
+      margin-top: 16px;
+    }
+
+    .sidebar-divider {
+      display: none;
+    }
+
+    .match-score {
+      min-width: 160px;
+    }
+
+    .skill-gaps {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .interview-page {
+    padding: 16px 12px;
+  }
+
+  .interview-layout {
+    grid-template-columns: 1fr;
+
+    .interview-divider {
+      display: none;
+    }
+
+    .interview-nav {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      min-height: unset;
+      gap: 8px;
+
+      .nav-content {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      &__label { display: none; }
+
+      &__item {
+        padding: 8px 12px;
+        font-size: 0.82rem;
+      }
+
+      .button {
+        width: auto;
+        padding: 8px 14px;
+        font-size: 0.82rem;
+      }
+    }
+
+    .interview-sidebar {
+      flex-direction: column;
+    }
+  }
+
+  .content-header h2 {
+    font-size: 1.15rem;
+  }
+}
