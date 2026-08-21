@@ -7,11 +7,7 @@ const app = express();
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-<<<<<<< HEAD
     origin:"http://localhost:5173",
-=======
-    origin:"https://resumefrontend-s1gy.onrender.com",
->>>>>>> 1c0757a0433b7fa943493a862053362ab9d8c9e0
     credentials:true
 }))
 const authRouter = require("./routes/auth.route")
